@@ -1,28 +1,50 @@
 class TeamModel {
-  final String id;
+  final int footballDataId;
   final String name;
-  final String league;
-  final String country;
-  final String badge;
-  final String stadium;
+  final String displayName;
+  final String? logoUrl;
+  final String? shortName;
+  final String? tla;
 
   TeamModel({
-    required this.id,
+    required this.footballDataId,
     required this.name,
-    required this.league,
-    required this.country,
-    required this.badge,
-    required this.stadium,
+    required this.displayName,
+    this.logoUrl,
+    this.shortName,
+    this.tla,
   });
 
-  factory TeamModel.fromMap(Map<String, dynamic> map) {
+  factory TeamModel.fromFootballData(Map<String, dynamic> json) {
     return TeamModel(
-      id: map['idTeam'] ?? '',
-      name: map['strTeam'] ?? 'Sem nome',
-      league: map['strLeague'] ?? 'Liga não informada',
-      country: map['strCountry'] ?? 'País não informado',
-      badge: map['strBadge'] ?? '',
-      stadium: map['strStadium'] ?? 'Estádio não informado',
+      footballDataId: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      displayName: json['shortName'] ?? json['name'] ?? '',
+      logoUrl: json['crest'],
+      shortName: json['shortName'],
+      tla: json['tla'],
     );
+  }
+
+  factory TeamModel.fromJson(Map<String, dynamic> json) {
+    return TeamModel(
+      footballDataId: json['footballDataId'] ?? 0,
+      name: json['name'] ?? '',
+      displayName: json['displayName'] ?? '',
+      logoUrl: json['logoUrl'],
+      shortName: json['shortName'],
+      tla: json['tla'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'footballDataId': footballDataId,
+      'name': name,
+      'displayName': displayName,
+      'logoUrl': logoUrl,
+      'shortName': shortName,
+      'tla': tla,
+    };
   }
 }
